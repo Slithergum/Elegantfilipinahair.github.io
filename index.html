@@ -432,13 +432,13 @@
 
       <div class="modal-about-content" id="aboutModalContent">
         <h2>About Us</h2>
-        <p>We are one of the high-quality supplier of human hair. Specialing hair wefting, Hair Bundle Processesing, etc. (Website still under development!)</p>
+        <p>We are one of the high-quality supplier of human hair. Specialing hair wefting, Hair Bundle Processesing, etc. (Website still under development!</p>
       </div>
 
       <div class="modal-contact-content" id="contactModalContent">
         <h2>Contact Us</h2>
         <div class="contact-links">
-          <a href="#"><i class="fa-solid fa-phone"></i>+63 955 025 9861</a>
+          <a href="#" id="phoneLink"><i class="fa-solid fa-phone"></i>+63 955 025 9861</a>
           <a href="https://www.facebook.com/profile.php?id=61591508234730"><i class="fa-brands fa-facebook"></i>Facebook</a>
           <a href="https://www.instagram.com/filipinahair/"><i class="fa-brands fa-instagram"></i>Instagram</a>
           <a href="#"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
@@ -454,9 +454,10 @@
           dateStyle: 'full',
           timeStyle: 'medium'
         });
-      }  
-showTime();
-setInterval(showTime, 1000);
+      }
+      showTime();
+      setInterval(showTime, 1000);
+
       const galleryImages = document.querySelectorAll('.container img');
       const aboutBtn = document.getElementById('aboutBtn');
       const contactBtn = document.getElementById('contactBtn');
@@ -501,6 +502,41 @@ setInterval(showTime, 1000);
           customModal.classList.remove('active');
         }
       });
+
+      
+      const phoneLink = document.getElementById('phoneLink');
+      if (phoneLink) {
+        phoneLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          const phoneNumber = '+63 955 025 9861';
+          
+          navigator.clipboard.writeText(phoneNumber).then(() => {
+            const icon = phoneLink.querySelector('i');
+            const originalIconClass = icon.className;
+            icon.className = 'fa-solid fa-check';
+            
+            let feedback = phoneLink.querySelector('.copy-feedback');
+            if (!feedback) {
+              feedback = document.createElement('span');
+              feedback.className = 'copy-feedback';
+              feedback.style.marginLeft = 'auto';
+              feedback.style.fontSize = '12px';
+              feedback.style.color = '#ffd700';
+              feedback.textContent = 'Copied!';
+              phoneLink.appendChild(feedback);
+            }
+            
+            setTimeout(() => {
+              icon.className = originalIconClass;
+              if (feedback) {
+                feedback.remove();
+              }
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy text: ', err);
+          });
+        });
+      }
     </script>
   </body>
 </html>
