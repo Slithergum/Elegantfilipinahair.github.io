@@ -448,11 +448,15 @@
 
     <script>
       function showTime() {
-        document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-      }
-      showTime();
-      setInterval(showTime, 1000);
-
+        const now = new Date();
+        document.getElementById('currentTime').innerHTML = now.toLocaleString('en-US', {
+          timeZone: 'Asia/Manila',
+          dateStyle: 'full',
+          timeStyle: 'medium'
+        });
+      }  
+showTime();
+setInterval(showTime, 1000);
       const galleryImages = document.querySelectorAll('.container img');
       const aboutBtn = document.getElementById('aboutBtn');
       const contactBtn = document.getElementById('contactBtn');
