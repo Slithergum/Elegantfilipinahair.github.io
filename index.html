@@ -163,6 +163,7 @@
         border: 1px solid rgba(255, 215, 0, 0.5);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 215, 0, 0.1);
         transition: all 0.3s ease;
+        user-select: none;
       }
 
       .category p:hover {
@@ -217,7 +218,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: rgba(0, 0, 0, 0.85);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -225,7 +226,7 @@
         visibility: hidden;
         transition: opacity 0.3s ease, visibility 0.3s ease;
         z-index: 1000;
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(6px);
       }
 
       .modal-overlay.active {
@@ -247,7 +248,127 @@
       }
 
       .modal-overlay.active .modal-image {
-        transform: scale(1.5);
+        transform: scale(1);
+      }
+
+      /* Horizontal Slider Container Styles */
+      .modal-slider-wrapper {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 85vw;
+        max-width: 850px;
+        position: relative;
+      }
+
+      .slider-title {
+        color: #ffd700;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      }
+
+      .slider-main {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .slider-track-container {
+        width: 100%;
+        overflow: hidden;
+        border-radius: 20px;
+        border: 2px solid #ffd700;
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), 0 0 50px rgba(237, 9, 250, 0.3);
+        background: rgba(20, 5, 25, 0.9);
+      }
+
+      .slider-track {
+        display: flex;
+        transition: transform 0.4s ease-in-out;
+      }
+
+      .slider-slide {
+        min-width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .slider-slide img {
+        width: 100%;
+        height: 55vh;
+        max-height: 500px;
+        object-fit: cover;
+      }
+
+      .no-images-msg {
+        padding: 60px 20px;
+        color: #ffe066;
+        font-size: 16px;
+        text-align: center;
+        width: 100%;
+      }
+
+      .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(45, 10, 55, 0.85);
+        color: #ffd700;
+        border: 1.5px solid #ffd700;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        z-index: 10;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background: rgba(212, 35, 232, 0.9);
+        color: #ffffff;
+        scale: 1.1;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      }
+
+      .nav-btn.prev {
+        left: -22px;
+      }
+
+      .nav-btn.next {
+        right: -22px;
+      }
+
+      .slider-pagination {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        border: 1px solid #ffd700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .dot.active {
+        background: #ffd700;
+        width: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 8px #ffd700;
       }
 
       .modal-about-content {
@@ -368,8 +489,17 @@
           gap: 15px;
         }
         .modal-image {
-          max-width: 50vw;
+          max-width: 80vw;
           max-height: 50vh;
+        }
+        .nav-btn.prev {
+          left: 5px;
+        }
+        .nav-btn.next {
+          right: 5px;
+        }
+        .slider-slide img {
+          height: 45vh;
         }
       }
 
@@ -393,7 +523,6 @@
   </head>
   <body>
     <div>
-
       <div class="topBar">
         <p class="time" id="currentTime"></p>
         <div class="topRightActions">
@@ -409,11 +538,11 @@
 
       <div>
         <div class="category">
-          <p>Single Drawn</p>
-          <p>Double Drawn Straight</p>
-          <p>Natural Wavy</p>
-          <p>Single Drawn Steam</p>
-          <p>Double Drawn Steam</p>
+          <p data-category="Single Drawn">Single Drawn</p>
+          <p data-category="Double Drawn Straight">Double Drawn Straight</p>
+          <p data-category="Natural Wavy">Natural Wavy</p>
+          <p data-category="Single Drawn Steam">Single Drawn Steam</p>
+          <p data-category="Double Drawn Steam">Double Drawn Steam</p>
         </div>
       </div>
 
@@ -430,9 +559,22 @@
     <div class="modal-overlay" id="customModal">
       <img src="" alt="Enlarged view" class="modal-image" id="modalImg" />
 
+      <!-- Horizontal Image Slider -->
+      <div class="modal-slider-wrapper" id="sliderWrapper">
+        <h3 class="slider-title" id="sliderTitle">Category Name</h3>
+        <div class="slider-main">
+          <button class="nav-btn prev" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+          <div class="slider-track-container">
+            <div class="slider-track" id="sliderTrack"></div>
+          </div>
+          <button class="nav-btn next" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div class="slider-pagination" id="sliderPagination"></div>
+      </div>
+
       <div class="modal-about-content" id="aboutModalContent">
         <h2>About Us</h2>
-        <p>We are one of the high-quality supplier of human hair. Specialing hair wefting, Hair Bundle Processesing, etc. (Website still under development!</p>
+        <p>We are one of the high-quality suppliers of human hair. Specializing in hair wefting, Hair Bundle Processing, etc. (Website still under development!)</p>
       </div>
 
       <div class="modal-contact-content" id="contactModalContent">
@@ -458,18 +600,133 @@
       showTime();
       setInterval(showTime, 1000);
 
+      // =========================================================
+      // ADD YOUR IMAGE URLS OR PATHS IN THESE ARRAYS WHEN READY:
+      // Example:
+      // "Single Drawn": ["image1.jpg", "image2.jpg", "image3.jpg"],
+      // =========================================================
+      const categoryGallery = {
+        "Single Drawn": [
+          "wefted1.png"
+        ],
+        "Double Drawn Straight": [
+          // Add up to 10 image paths here
+        ],
+        "Natural Wavy": [
+          // Add up to 10 image paths here
+        ],
+        "Single Drawn Steam": [
+          // Add up to 10 image paths here
+        ],
+        "Double Drawn Steam": [
+          // Add up to 10 image paths here
+        ]
+      };
+
+      let currentSlideIndex = 0;
+      let totalSlides = 0;
+
       const galleryImages = document.querySelectorAll('.container img');
+      const categoryButtons = document.querySelectorAll('.category p');
       const aboutBtn = document.getElementById('aboutBtn');
       const contactBtn = document.getElementById('contactBtn');
+      
       const customModal = document.getElementById('customModal');
       const modalImg = document.getElementById('modalImg');
+      const sliderWrapper = document.getElementById('sliderWrapper');
+      const sliderTrack = document.getElementById('sliderTrack');
+      const sliderTitle = document.getElementById('sliderTitle');
+      const sliderPagination = document.getElementById('sliderPagination');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
       const aboutModalContent = document.getElementById('aboutModalContent');
       const contactModalContent = document.getElementById('contactModalContent');
 
+      function hideAllModalViews() {
+        modalImg.style.display = 'none';
+        sliderWrapper.style.display = 'none';
+        aboutModalContent.style.display = 'none';
+        contactModalContent.style.display = 'none';
+      }
+
+      // Category Click -> Open Horizontal Slider
+      categoryButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const categoryName = btn.getAttribute('data-category') || btn.textContent.trim();
+          const images = categoryGallery[categoryName] || [];
+
+          hideAllModalViews();
+          sliderTitle.textContent = categoryName;
+          
+          sliderTrack.innerHTML = '';
+          sliderPagination.innerHTML = '';
+          currentSlideIndex = 0;
+          totalSlides = images.length;
+
+          if (totalSlides === 0) {
+            // Hide navigation buttons if there are no images
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            sliderTrack.innerHTML = `<div class="no-images-msg">No images added to this category yet.</div>`;
+          } else {
+            // Show navigation buttons
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
+
+            images.forEach((imgSrc, index) => {
+              const slide = document.createElement('div');
+              slide.className = 'slider-slide';
+              slide.innerHTML = `<img src="${imgSrc}" alt="${categoryName} Image ${index + 1}" />`;
+              sliderTrack.appendChild(slide);
+
+              const dot = document.createElement('span');
+              dot.className = `dot ${index === 0 ? 'active' : ''}`;
+              dot.addEventListener('click', () => goToSlide(index));
+              sliderPagination.appendChild(dot);
+            });
+          }
+
+          updateSlidePosition();
+          sliderWrapper.style.display = 'flex';
+          customModal.classList.add('active');
+        });
+      });
+
+      function updateSlidePosition() {
+        if (totalSlides > 0) {
+          sliderTrack.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+          const dots = sliderPagination.querySelectorAll('.dot');
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlideIndex);
+          });
+        } else {
+          sliderTrack.style.transform = 'none';
+        }
+      }
+
+      function goToSlide(index) {
+        currentSlideIndex = index;
+        updateSlidePosition();
+      }
+
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (totalSlides <= 1) return;
+        currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+        updateSlidePosition();
+      });
+
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (totalSlides <= 1) return;
+        currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+        updateSlidePosition();
+      });
+
+      // Gallery Standalone Images Click
       galleryImages.forEach((img) => {
         img.addEventListener('click', () => {
-          aboutModalContent.style.display = 'none';
-          contactModalContent.style.display = 'none';
+          hideAllModalViews();
           modalImg.style.display = 'block';
           modalImg.src = img.src;
           modalImg.alt = img.alt;
@@ -477,33 +734,44 @@
         });
       });
 
+      // Navigation Header Buttons
       aboutBtn.addEventListener('click', () => {
-        modalImg.style.display = 'none';
-        contactModalContent.style.display = 'none';
+        hideAllModalViews();
         aboutModalContent.style.display = 'block';
         customModal.classList.add('active');
       });
 
       contactBtn.addEventListener('click', () => {
-        modalImg.style.display = 'none';
-        aboutModalContent.style.display = 'none';
+        hideAllModalViews();
         contactModalContent.style.display = 'block';
         customModal.classList.add('active');
       });
 
+      // Close modal on outer overlay click
       customModal.addEventListener('click', (e) => {
         if (e.target === customModal) {
           customModal.classList.remove('active');
         }
       });
 
+      // Keyboard Controls (Esc to close, Left/Right arrows to scroll)
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && customModal.classList.contains('active')) {
+        if (!customModal.classList.contains('active')) return;
+
+        if (e.key === 'Escape') {
           customModal.classList.remove('active');
+        } else if (sliderWrapper.style.display === 'flex' && totalSlides > 1) {
+          if (e.key === 'ArrowLeft') {
+            currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+            updateSlidePosition();
+          } else if (e.key === 'ArrowRight') {
+            currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+            updateSlidePosition();
+          }
         }
       });
 
-      
+      // Copy-to-Clipboard functionality
       const phoneLink = document.getElementById('phoneLink');
       if (phoneLink) {
         phoneLink.addEventListener('click', (e) => {
