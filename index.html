@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elegant Filipina Hair</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style type="text/css" media="all">
+      html {
+        scroll-behavior: smooth;
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       }
 
       body {
@@ -44,6 +51,8 @@
         justify-content: space-between;
         align-items: center;
         padding: 12px 20px;
+        background: rgba(19, 3, 26, 0.4);
+        backdrop-filter: blur(5px);
       }
 
       .topRightActions {
@@ -53,7 +62,6 @@
       }
 
       .time {
-        font-family: sans-serif;
         font-size: 12px;
         color: #ffe066;
         font-weight: 600;
@@ -81,6 +89,7 @@
         transform: scale(0.95);
       }
 
+      .inquire-btn,
       .about-btn {
         background: linear-gradient(135deg, rgba(88, 14, 99, 0.85), rgba(168, 28, 186, 0.75));
         color: #ffd700;
@@ -96,6 +105,7 @@
         transition: all 0.3s ease;
       }
 
+      .inquire-btn:hover,
       .about-btn:hover {
         background: linear-gradient(135deg, rgba(140, 20, 158, 0.95), rgba(212, 35, 232, 0.95));
         border-color: #ffe066;
@@ -103,6 +113,7 @@
         box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
       }
 
+      .inquire-btn:active,
       .about-btn:active {
         transform: scale(0.95);
       }
@@ -251,7 +262,6 @@
         transform: scale(1);
       }
 
-      /* Horizontal Slider Container Styles */
       .modal-slider-wrapper {
         display: none;
         flex-direction: column;
@@ -371,8 +381,10 @@
         box-shadow: 0 0 8px #ffd700;
       }
 
-      .modal-about-content {
-        background: rgba(45, 10, 55, 0.9);
+      .modal-about-content,
+      .modal-contact-content,
+      .modal-thankyou-content {
+        background: rgba(45, 10, 55, 0.95);
         border: 2px solid #ffd700;
         border-radius: 25px;
         padding: 35px 40px;
@@ -387,46 +399,50 @@
         transition: transform 0.3s ease;
       }
 
-      .modal-overlay.active .modal-about-content {
+      .modal-overlay.active .modal-about-content,
+      .modal-overlay.active .modal-contact-content,
+      .modal-overlay.active .modal-thankyou-content {
         transform: scale(1);
       }
 
-      .modal-about-content h2 {
+      .modal-about-content h2,
+      .modal-contact-content h2,
+      .modal-thankyou-content h2 {
         color: #ffd700;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         letter-spacing: 1.5px;
       }
 
-      .modal-about-content p {
+      .modal-about-content p,
+      .modal-thankyou-content p {
         color: #f3e5f5;
         font-size: 15px;
         line-height: 1.6;
       }
 
-      .modal-contact-content {
-        background: rgba(45, 10, 55, 0.9);
-        border: 2px solid #ffd700;
-        border-radius: 25px;
-        padding: 35px 40px;
-        max-width: 450px;
-        width: 85%;
-        text-align: center;
-        color: #ffffff;
-        box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 50px rgba(237, 9, 250, 0.4);
-        display: none;
-        backdrop-filter: blur(10px);
-        transform: scale(0.9);
-        transition: transform 0.3s ease;
-      }
-
-      .modal-overlay.active .modal-contact-content {
-        transform: scale(1);
-      }
-
-      .modal-contact-content h2 {
+      .modal-thankyou-content i {
+        font-size: 45px;
         color: #ffd700;
-        margin-bottom: 25px;
-        letter-spacing: 1.5px;
+        margin-bottom: 15px;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+      }
+
+      .modal-thankyou-content button {
+        margin-top: 20px;
+        background: linear-gradient(135deg, rgba(88, 14, 99, 0.85), rgba(168, 28, 186, 0.75));
+        color: #ffd700;
+        border: 1px solid rgba(255, 215, 0, 0.5);
+        padding: 8px 25px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .modal-thankyou-content button:hover {
+        background: linear-gradient(135deg, rgba(140, 20, 158, 0.95), rgba(212, 35, 232, 0.95));
+        border-color: #ffe066;
       }
 
       .contact-links {
@@ -465,6 +481,104 @@
         color: #ffd700;
       }
 
+      .orderCont {
+        display: none;
+        background: rgba(45, 10, 55, 0.95);
+        border: 2px solid #ffd700;
+        border-radius: 25px;
+        padding: 30px;
+        max-width: 650px;
+        width: 90%;
+        margin: 20px auto 50px auto;
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 50px rgba(237, 9, 250, 0.3);
+        backdrop-filter: blur(10px);
+        gap: 20px;
+        flex-direction: column;
+      }
+
+      .orderCont h2 {
+        color: #ffd700;
+        text-align: center;
+        margin-bottom: 10px;
+        letter-spacing: 1.5px;
+        font-size: 1.5rem;
+      }
+
+      .order-form-body {
+        display: flex;
+        gap: 20px;
+      }
+
+      .textDiv {
+        flex: 1;
+        display: flex;
+      }
+
+      .textDiv textarea {
+        width: 100%;
+        height: 100%;
+        min-height: 210px;
+        background: rgba(20, 3, 26, 0.6);
+        border: 1px solid rgba(255, 215, 0, 0.4);
+        border-radius: 12px;
+        padding: 12px;
+        color: #ffffff;
+        font-size: 14px;
+        resize: none;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .infoCont {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .infoCont input,
+      .textDiv textarea {
+        background: rgba(20, 3, 26, 0.6);
+        border: 1px solid rgba(255, 215, 0, 0.4);
+        border-radius: 10px;
+        padding: 10px 14px;
+        color: #ffffff;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .infoCont input::placeholder,
+      .textDiv textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .infoCont input:focus,
+      .textDiv textarea:focus {
+        border-color: #ffd700;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+      }
+
+      .sendButton {
+        height: 40px;
+        width: 100%;
+        background: linear-gradient(135deg, rgba(88, 14, 99, 0.85), rgba(168, 28, 186, 0.75));
+        color: #ffd700;
+        border: 1px solid rgba(255, 215, 0, 0.5);
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 5px;
+        transition: all 0.3s ease;
+      }
+
+      .sendButton:hover {
+        background: linear-gradient(135deg, rgba(140, 20, 158, 0.95), rgba(212, 35, 232, 0.95));
+        border-color: #ffe066;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+      }
+
       @media screen and (max-width: 768px) {
         .headerCont {
           flex-direction: column;
@@ -501,6 +615,9 @@
         .slider-slide img {
           height: 45vh;
         }
+        .order-form-body {
+          flex-direction: column;
+        }
       }
 
       @media screen and (max-width: 480px) {
@@ -525,6 +642,7 @@
     <div>
       <div class="topBar">
         <p class="time" id="currentTime"></p>
+        <button class="inquire-btn" id="inquireBtn">Inquire Now</button>
         <div class="topRightActions">
           <button class="contact-btn" id="contactBtn">Contact</button>
           <button class="about-btn" id="aboutBtn">About</button>
@@ -559,7 +677,6 @@
     <div class="modal-overlay" id="customModal">
       <img src="" alt="Enlarged view" class="modal-image" id="modalImg" />
 
-      <!-- Horizontal Image Slider -->
       <div class="modal-slider-wrapper" id="sliderWrapper">
         <h3 class="slider-title" id="sliderTitle">Category Name</h3>
         <div class="slider-main">
@@ -574,20 +691,47 @@
 
       <div class="modal-about-content" id="aboutModalContent">
         <h2>About Us</h2>
-        <p>We are one of the high-quality suppliers of human hair. Specializing in hair wefting, Hair Bundle Processing, etc. (Website still under development!)<br><br>Founded by: <em>Rhon Padilla & Mhay Padilla</em></p>
+        <p>
+          We are one of the high-quality suppliers of human hair. Specializing in hair wefting, Hair Bundle Processing, etc. (Website still under development!)<br /><br />
+          <em>Founded by: Rhon Padilla & Mhay Padilla</em>
+        </p>
       </div>
 
       <div class="modal-contact-content" id="contactModalContent">
         <h2>Contact Us</h2>
         <div class="contact-links">
           <a href="#" id="phoneLink"><i class="fa-solid fa-phone"></i>+63 955 025 9861</a>
-          <a href="https://www.facebook.com/profile.php?id=61591508234730"><i class="fa-brands fa-facebook"></i>Facebook</a>
-          <a href="https://www.instagram.com/filipinahair/"><i class="fa-brands fa-instagram"></i>Instagram</a>
-          <a href="https://wa.me/639550259861"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+          <a href="https://www.facebook.com/profile.php?id=61591508234730" target="_blank"><i class="fa-brands fa-facebook"></i>Facebook</a>
+          <a href="https://www.instagram.com/filipinahair/" target="_blank"><i class="fa-brands fa-instagram"></i>Instagram</a>
+          <a href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
         </div>
+      </div>
+
+      <div class="modal-thankyou-content" id="thankyouModalContent">
+        <i class="fa-solid fa-circle-check"></i>
+        <h2>Order Received!</h2>
+        <p>Thank you! We'll call you for the confirmation of the order.</p>
+        <button id="closeThankYouBtn">Close</button>
       </div>
     </div>
 
+    <div class="orderCont" id="orderCont">
+      <h2>Inquire / Order</h2>
+      <div class="order-form-body">
+        <div class="textDiv" id="textCont">
+          <textarea id="textField" placeholder="What do you want to inquire about or order?"></textarea>
+        </div>
+
+        <div class="infoCont">
+          <input type="text" id="firstName" placeholder="First Name" />
+          <input type="text" id="lastName" placeholder="Last Name" />
+          <input type="email" id="email" placeholder="Email Address" required />
+          <input type="tel" id="contact-number" placeholder="Contact Number" required />
+          <input type="text" id="address" placeholder="Full Delivery Address" required />
+          <button class="sendButton" id="sendButton">Send Message</button>
+        </div>
+      </div>
+    </div>
     <script src="jScript.js"></script>
   </body>
 </html>
