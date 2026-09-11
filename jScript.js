@@ -1,4 +1,4 @@
-function showTime() {
+      function showTime() {
         const now = new Date();
         document.getElementById('currentTime').innerHTML = now.toLocaleString('en-US', {
           timeZone: 'Asia/Manila',
@@ -10,21 +10,11 @@ function showTime() {
       setInterval(showTime, 1000);
 
       const categoryGallery = {
-        "Single Drawn": [
-          "wefted1.png"
-        ],
-        "Double Drawn Straight": [
-        
-        ],
-        "Natural Wavy": [
-         
-        ],
-        "Single Drawn Steam": [
-        
-        ],
-        "Double Drawn Steam": [
-          
-        ]
+        "Single Drawn": ["wefted1.png"],
+        "Double Drawn Straight": [],
+        "Natural Wavy": [],
+        "Single Drawn Steam": [],
+        "Double Drawn Steam": []
       };
 
       let currentSlideIndex = 0;
@@ -34,7 +24,7 @@ function showTime() {
       const categoryButtons = document.querySelectorAll('.category p');
       const aboutBtn = document.getElementById('aboutBtn');
       const contactBtn = document.getElementById('contactBtn');
-      
+
       const customModal = document.getElementById('customModal');
       const modalImg = document.getElementById('modalImg');
       const sliderWrapper = document.getElementById('sliderWrapper');
@@ -45,12 +35,15 @@ function showTime() {
       const nextBtn = document.getElementById('nextBtn');
       const aboutModalContent = document.getElementById('aboutModalContent');
       const contactModalContent = document.getElementById('contactModalContent');
+      const thankyouModalContent = document.getElementById('thankyouModalContent');
+      const closeThankYouBtn = document.getElementById('closeThankYouBtn');
 
       function hideAllModalViews() {
         modalImg.style.display = 'none';
         sliderWrapper.style.display = 'none';
         aboutModalContent.style.display = 'none';
         contactModalContent.style.display = 'none';
+        thankyouModalContent.style.display = 'none';
       }
 
       categoryButtons.forEach((btn) => {
@@ -60,7 +53,7 @@ function showTime() {
 
           hideAllModalViews();
           sliderTitle.textContent = categoryName;
-          
+
           sliderTrack.innerHTML = '';
           sliderPagination.innerHTML = '';
           currentSlideIndex = 0;
@@ -152,6 +145,10 @@ function showTime() {
         }
       });
 
+      closeThankYouBtn.addEventListener('click', () => {
+        customModal.classList.remove('active');
+      });
+
       document.addEventListener('keydown', (e) => {
         if (!customModal.classList.contains('active')) return;
 
@@ -173,31 +170,100 @@ function showTime() {
         phoneLink.addEventListener('click', (e) => {
           e.preventDefault();
           const phoneNumber = '+63 955 025 9861';
-          
-          navigator.clipboard.writeText(phoneNumber).then(() => {
-            const icon = phoneLink.querySelector('i');
-            const originalIconClass = icon.className;
-            icon.className = 'fa-solid fa-check';
-            
-            let feedback = phoneLink.querySelector('.copy-feedback');
-            if (!feedback) {
-              feedback = document.createElement('span');
-              feedback.className = 'copy-feedback';
-              feedback.style.marginLeft = 'auto';
-              feedback.style.fontSize = '12px';
-              feedback.style.color = '#ffd700';
-              feedback.textContent = 'Copied!';
-              phoneLink.appendChild(feedback);
-            }
-            
-            setTimeout(() => {
-              icon.className = originalIconClass;
-              if (feedback) {
-                feedback.remove();
+
+          navigator.clipboard
+            .writeText(phoneNumber)
+            .then(() => {
+              const icon = phoneLink.querySelector('i');
+              const originalIconClass = icon.className;
+              icon.className = 'fa-solid fa-check';
+
+              let feedback = phoneLink.querySelector('.copy-feedback');
+              if (!feedback) {
+                feedback = document.createElement('span');
+                feedback.className = 'copy-feedback';
+                feedback.style.marginLeft = 'auto';
+                feedback.style.fontSize = '12px';
+                feedback.style.color = '#ffd700';
+                feedback.textContent = 'Copied!';
+                phoneLink.appendChild(feedback);
               }
-            }, 2000);
-          }).catch(err => {
-            console.error('Failed to copy text: ', err);
-          });
+
+              setTimeout(() => {
+                icon.className = originalIconClass;
+                if (feedback) {
+                  feedback.remove();
+                }
+              }, 2000);
+            })
+            .catch((err) => {
+              console.error('Failed to copy text: ', err);
+            });
         });
       }
+
+     
+      const inquiry = document.getElementById('inquireBtn');
+      const sendBtn = document.getElementById('sendButton');
+      const orderDiv = document.getElementById('orderCont');
+
+      inquiry.onclick = function () {
+        if (orderDiv.style.display === 'flex') {
+          orderDiv.style.display = 'none';
+        } else {
+          orderDiv.style.display = 'flex';
+          
+          
+          requestAnimationFrame(() => {
+            const yOffset = -30; 
+            const y = orderDiv.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            
+            window.scrollTo({
+              top: y,
+              behavior: 'smooth'
+            });
+          });
+        }
+      };
+
+      sendBtn.onclick = function () {
+        const orderText = document.getElementById('textField');
+        const email = document.getElementById('email');
+        const contactNum = document.getElementById('contact-number');
+        const address = document.getElementById('address');
+        const firstName = document.getElementById('firstName');
+        const lastName = document.getElementById('lastName');
+
+        if (!email || !contactNum || !address) {
+          alert('Please fill in your Email, Contact Number, and Full Address.');
+          return;
+        }
+        else{
+          const formspreeUrl = "https://formspree.io/f/mgogdlqo"; 
+
+            fetch(formspreeUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: "Email"+email.value+"\nContact: "+contactNum.value+"\nFirstname: "+firstName.value+"\nLastname: "+lastName.value+"\nAddress: "+address.value+"\n\n\nORDER: "+orderText.value
+                })
+            }).then(response => {
+                if (response.ok) {
+                  
+                    console.log("Submitted");
+                    alert("Thank You for submitting your order request. We'll reach you out to confirm the order!")
+                  
+                } else {
+                    console.error("Failed.");
+                }
+            }).catch(err => console.error("Error", err));
+
+        }
+
+        
+
+            
+      };
