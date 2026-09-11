@@ -248,7 +248,7 @@
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    message: "Email"+email.value+"\nContact: "+contactNum.value+"\nFirstname: "+firstName.value+"\nLastname: "+lastName.value+"\nAddress: "+address.value+"\n\n\nORDER: "+orderText.value
+                    message: "Email: "+email.value+"\nContact: "+contactNum.value+"\nFirstname: "+firstName.value+"\nLastname: "+lastName.value+"\nAddress: "+address.value+"\n\n\nORDER: "+orderText.value
                 })
             }).then(response => {
                 if (response.ok) {
